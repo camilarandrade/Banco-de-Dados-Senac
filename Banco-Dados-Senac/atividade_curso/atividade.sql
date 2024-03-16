@@ -34,54 +34,171 @@ DROP TABLE Fornecedor;
 #################### DML
 -- 0. Crie ao menos 5 registros para cada tabela, ignorando o gerneciamento de usuários. Um dos clientes deverá ter o seu nome
 
+INSERT INTO Cliente (Nome, Email, Telefone) VALUES
+    ('Camila Andrade', 'camila@example.com', '1234567890'),
+    ('Maria Oliveira', 'maria@example.com', '2345678901'),
+    ('Carlos Santos', 'carlos@example.com', '3456789012'),
+    ('Ana Souza', 'ana@example.com', '4567890123'),
+    ('Lucas Pereira', 'lucas@example.com', '5678901234');
+
+-- Formas de Pagamento
+INSERT INTO FormaPagamento (Nome, Descricao) VALUES
+    ('Cartão de Crédito', 'Pagamento com cartão de crédito'),
+    ('Boleto Bancário', 'Pagamento via boleto'),
+    ('Transferência Bancária', 'Pagamento por transferência');
+    
+-- Pedidos
+
+INSERT INTO Pedido (ClienteID, DataPedido, FormaPagamentoId, Status) VALUES
+    (1, '2024-02-01', 1, 'Em processamento'),
+    (2, '2024-02-02', 2, 'Aguardando pagamento'),
+    (3, '2024-02-03', 1, 'Enviado'),
+    (4, '2024-02-04', 3, 'Entregue'),
+    (5, '2024-02-05', 2, 'Cancelado');
+    
+-- Categorias
+
+INSERT INTO Categoria (Nome, Descricao) VALUES
+    ('Roupas', 'Roupas masculinas e femininas'),
+    ('Calçados', 'Calçados masculinos e femininos'),
+    ('Acessórios', 'Acessórios esportivos'),
+    ('Bolsas', 'Bolsas femininas'),
+    ('Relógios', 'Relógios analógicos e digitais');
+
+-- Produtos
+INSERT INTO Produto (Nome, Descricao, Preco, CategoriaID) VALUES
+    ('Camiseta', 'Camiseta de algodão', 19.99, 1),
+    ('Calça Jeans', 'Calça jeans masculina', 49.99, 2),
+    ('Tênis', 'Tênis esportivo', 59.99, 3),
+    ('Bolsa', 'Bolsa feminina', 29.99, 4),
+    ('Relógio', 'Relógio analógico', 39.99, 5);
+    
+    -- Inserção de registros na tabela ItemPedido    
+INSERT INTO ItemPedido (PedidoId, ProdutoId, Quantidade, UsuarioAtualizacao)VALUES 
+    (4, 2, 1, 1),
+    (5, 3, 2, 1),
+    (1, 4, 3, 1),
+    (2, 5, 1, 1),
+    (3, 1, 2, 1);
+    
+-- Inserção de registros na tabela GrupoUsuário
+INSERT INTO GrupoUsuario (Nome, Descricao) VALUES 
+    ('Administradores', 'Grupo de usuários com permissões de administração'),
+    ('Usuários Comuns', 'Grupo de usuários comuns');
+    
+-- Inserção de registros na tabela Permissao    
+INSERT INTO Permissao (Nome, Descricao) VALUES 
+    ('Leitura', 'Permissão para leitura'),
+    ('Escrita', 'Permissão para escrita'),
+    ('Exclusão', 'Permissão para exclusão'),
+    ('Administração', 'Permissão para administração');
+
+    
 -- 1. Atualizar o nome de um cliente:
 
+-- alterando o nome Camila para Rafael--
+UPDATE Cliente
+SET Nome = 'Rafael Mesquita'
+WHERE Id= 1;
+
+SELECT * FROM Cliente;
 
 -- 2. Deletar um produto:
 
+-- deletando o produto Calça Jeans (deu erro) --
+
+DELETE FROM Produto
+WHERE Id= 1;
+
+SELECT*FROM Produto;
 
 -- 3. Alterar a categoria de um produto:
 
+-- ALTERANDO A CATEGORIA DA CAMISETA PRA 3--
+
+UPDATE Produto
+SET CategoriaID = 3
+WHERE Id = 1;
+
+SELECT*FROM Produto;
 
 -- 4. Inserir um novo cliente:
 
+INSERT INTO Cliente (Nome, Email, Telefone)
+VALUES ('Daiane Nogueira', 'daymeuamor@example.com', '123456789');
 
 -- 5. Inserir um novo pedido:
 
+INSERT INTO Pedido (ClienteID, DataPedido, FormaPagamentoId, Status)
+VALUES (1, '2024-03-15', 1, 'Aguardando Pagamento');
+
+SELECT*FROM Pedido; 
 
 -- 6. Atualizar o preço de um produto:
+-- alterando o valor do relógio de 59,99 para 39,99 -- 
 
+UPDATE Produto
+SET Preco = 39.99
+WHERE Id = 2;
+
+SELECT*FROM Produto;
 
 ############## DQL - Sem Joins
 -- 1. Selecione todos os registros da tabela Produto:
 
+SELECT * FROM Produto;
 
 -- 2. Selecione apenas o nome e o preço dos produtos da tabela Produto:
 
+SELECT Nome, Preco 
+FROM Produto;
 
 -- 3. Selecione os produtos da tabela Produto ordenados por preço, do mais barato para o mais caro:
 
+SELECT * 
+FROM Produto
+ORDER BY Preco ASC;
 
 -- 4. Selecione os produtos da tabela Produto ordenados por preço, do mais caro para o mais barato:
+
+SELECT * 
+FROM Produto
+ORDER BY Preco DESC;
 
 -- 5. Selecione os nomes distintos das categorias da tabela Categoria:
 
 
+
 -- 6. Selecione os produtos da tabela Produto cujo preço esteja entre $10 e $50:
 
+SELECT * FROM Produto
+WHERE Preco 
+BETWEEN 10.00 AND 50.00;
 
 -- 7. Selecione os produtos da tabela Produto, mostrando o nome como "Nome do Produto" e o preço como "Preço Unitário":
 
+SELECT Nome AS 'Nome do Produto', 
+Preco AS 'Preço Unitário'
+FROM Produto;
 
 -- 8. Selecione os produtos da tabela Produto, adicionando uma coluna calculada "Preço Total" multiplicando a quantidade pelo preço:
 
 
 -- 9. Selecione os produtos da tabela Produto, mostrando apenas os 10 primeiros registros:
 
--- 10. Selecione os produtos da tabela Produto, pulando os primeiros 5 registros e mostrando os 10 seguintes:
+SELECT * 
+FROM Produto
+LIMIT 10;
 
+-- 10. Selecione os produtos da tabela Produto, pulando os primeiros 5 registros e mostrando os 10 seguintes:
+-- não vai aparecer nada pois só tem cinco produtos--
+
+SELECT * FROM Produto
+LIMIT 10 
+OFFSET 5;
 
 ############# DQL - Joins
+
 -- 1. Selecione o nome do produto e sua categoria:
 
 
@@ -99,9 +216,8 @@ DROP TABLE Fornecedor;
 
 -- 6. Selecione todos os produtos, mesmo aqueles que não foram pedidos:
 
-
-
 ############### DQL com joins e demais filtros
+
 -- 1. Selecione o nome da categoria e o número de produtos nessa categoria, apenas para categorias com mais de 5 produtos:
 
 
@@ -120,6 +236,7 @@ DROP TABLE Fornecedor;
 ##### Crie uma View qualquer para qualquer um dos joins desenvolvidos
 
 ##### Crie uma transaction que cadastra um cliente e faça uma venda
+
 -- Início da transação
 
 -- Inserir um novo cliente
