@@ -238,6 +238,7 @@ OFFSET 5;
 ##### Crie uma transaction que cadastra um cliente e faça uma venda
 
 -- Início da transação
+START TRANSACTION;
 
 -- Inserir um novo cliente
 
@@ -249,3 +250,5 @@ OFFSET 5;
 
 
 -- Commit da transação (confirmação das alterações)
+
+COMMIT;
