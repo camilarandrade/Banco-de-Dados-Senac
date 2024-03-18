@@ -200,6 +200,12 @@ OFFSET 5;
 ############# DQL - Joins
 
 -- 1. Selecione o nome do produto e sua categoria:
+-- inner join para retornar apenas os dados que possuem correspondencia entre as tabelas excluindo informações NULL
+
+
+SELECT produto.Nome, categoria.Nome
+FROM produto
+INNER JOIN categoria ON produto.categoriaID= categoria.Id;
 
 
 -- 2. Selecione o nome do cliente e o nome do produto que ele comprou:
@@ -209,9 +215,18 @@ OFFSET 5;
 
 
 -- 4. Selecione todos os clientes, mesmo aqueles que não fizeram nenhum pedido:
+-- left join para retornar todos os dados da tabela a esquerda, inclusive os que nao possuem correspondencia
 
+SELECT cliente.Nome AS Clientes
+FROM cliente
+LEFT JOIN pedido ON Cliente.ID;
 
 -- 5. Selecione todas as categorias, mesmo aquelas que não têm produtos associados:
+-- right join retorna todas as linhas da tabela a direita 
+
+SELECT Produto.Nome AS Produtos, categoria.Nome AS Categoria 
+FROM PRODUTO
+RIGHT JOIN categoria ON produto.categoriaID= categoria.ID; 
 
 
 -- 6. Selecione todos os produtos, mesmo aqueles que não foram pedidos:
@@ -219,10 +234,23 @@ OFFSET 5;
 ############### DQL com joins e demais filtros
 
 -- 1. Selecione o nome da categoria e o número de produtos nessa categoria, apenas para categorias com mais de 5 produtos:
+-- having é o mesmo que where
+-- agrupando para a contagem ser efetuada por cada categoria individualmente, para juntar categorias seria necessário usar o DISTINCT
+SELECT categoria.Nome, COUNT(Produto.Id) AS produto_categoria
+FROM produto
+LEFT JOIN categoria ON produto.CategoriaID = categoria.Id
+GROUP BY categoria.Nome
+HAVING COUNT(produto.Id) > 5;
+
 
 
 -- 2. Selecione o nome do cliente e o total de pedidos feitos por cada cliente:
+-- agrupando para a contagem ser efetuada por cada categoria individualmente, para juntar categorias seria necessário usar o DISTINCT
 
+SELECT cliente.Nome AS Cliente_Nome, COUNT(pedido.ID) AS Total_pedido_Cliente
+FROM pedido
+LEFT JOIN cliente ON pedido.ClienteID = cliente.ID
+GROUP BY cliente.Id;
 
 -- 3. Selecione o nome do produto, o nome da categoria e a quantidade total de vendas para cada produto:
 
@@ -234,9 +262,9 @@ OFFSET 5;
 
 
 ##### Crie uma View qualquer para qualquer um dos joins desenvolvidos
-
+-- nao consegui desenvolver
 ##### Crie uma transaction que cadastra um cliente e faça uma venda
-
+-- nao consegui desenvolver
 -- Início da transação
 START TRANSACTION;
 
